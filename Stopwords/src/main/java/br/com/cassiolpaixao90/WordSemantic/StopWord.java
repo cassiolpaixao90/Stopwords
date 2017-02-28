@@ -1,27 +1,28 @@
 package br.com.cassiolpaixao90.WordSemantic;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import br.com.cassiolpaixao90.WordSemantic.Interfaces.ExtractorFileTxt;
 import br.com.cassiolpaixao90.conf.Configuracao;
+import br.com.cassiolpaixao90.utils.Util;
 
-public class StopWords implements ExtractorFileTxt {
-	Scanner readStopWordFile;
-	List<String> listStopWord = null;
+public class StopWord implements ExtractorFileTxt {
+
+	private String nome;
+	private List<StopWord> stopWords;
+
+	protected static String pathStopWords = null;
+	protected Configuracao configuracao = null;
+
+	public StopWord(String nome) {
+		this.nome = nome;
+	}
 
 	public boolean searchForStopWord(String word, List<String> textForCheck) {
 		boolean achou = false;
@@ -35,7 +36,7 @@ public class StopWords implements ExtractorFileTxt {
 	}
 
 	public List<String> readStopWords(String stopWordsFilename) throws Exception {
-		this.listStopWord = new ArrayList<String>();
+		this.StopWords = new ArrayList<T>();
 
 		// InputStream in =
 		// ClassLoader.getSystemClassLoader().getResourceAsStream(stopWordsFilename);
@@ -76,23 +77,28 @@ public class StopWords implements ExtractorFileTxt {
 	}
 
 	public static void main(String[] args) throws Exception {
-		StopWords stopWords = new StopWords();
-		Configuracao configuracao = new Configuracao();
 		String nome = "à a teste então porque";
-		List<String> lista = configuracao.readStopWords(tokenizerString(nome),  configuracao.lerArquivoConfiguracao("outputfile"));
-		List<String> listaNova = stopWords.removeStopWords(nome, lista);
+		
+		Configuracao configuracao = new Configuracao();
+		List<String> lista = configuracao.readStopWords(Util.tokenizerString(new StopWord(nome)), pathStopWords);
+		List<String> listaNova = getStopWords().removeStopWords(nome, lista);
 		String nome1 = (String) listaNova.toString();
 		System.out.println(nome1);
 
 	}
-	
-	public static List<?> tokenizerString(String nome){
-		StringTokenizer tokenizer = new StringTokenizer(nome, " ");
-		List<String>strings = new ArrayList<String>();
-		while (tokenizer.hasMoreElements()) {
-			strings.add(tokenizer.nextElement().toString());
-		}
-		return strings;
-		
+
+	public String getNome() {
+		return nome;
 	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	
+	public void adicionaStopWord(StopWord stopWord){
+		stopWords.add(stopWord);
+	}
+
+	 
+
 }
