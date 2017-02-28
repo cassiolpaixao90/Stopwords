@@ -1,0 +1,1 @@
+outputfile = /stopword/stopwords_pt.txt
