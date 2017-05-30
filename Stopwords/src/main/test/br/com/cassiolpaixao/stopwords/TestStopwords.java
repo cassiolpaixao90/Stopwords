@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerException;
 
 import org.junit.Test;
 
-import br.com.cassiopaixao.stopwords.converter.Converter;
+import br.com.cassiopaixao.stopwords.parser.Converter;
 
 public class TestStopwords {
 
